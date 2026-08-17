@@ -1,0 +1,1643 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Contagem Regressiva</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #0a1a3a;
+      color: #ffffff;
+      font-family: Arial, Helvetica, sans-serif;
+
+      min-height: 100vh;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      text-align: center;
+
+      transition: background-color 0.7s ease;
+
+      overflow-x: hidden;
+    }
+
+
+    /* =========================
+       TÍTULO
+       ========================= */
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      letter-spacing: 1px;
+    }
+
+
+    /* =========================
+       CONTADOR
+       ========================= */
+
+    .timer {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .value {
+      font-size: 3.5rem;
+      font-weight: bold;
+
+      transition:
+        transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+
+      transform-origin: center;
+
+      cursor: default;
+    }
+
+
+    /* =========================
+       EFEITO DE CHOQUE + BRILHO
+       ========================= */
+
+    @keyframes choque {
+
+      0% {
+        transform: scale(1.8) translate(0, 0) rotate(0deg);
+
+        text-shadow:
+          0 0 5px #ffffff,
+          0 0 15px #ffffff,
+          0 0 30px #7db7ff,
+          0 0 50px #4d8dff;
+      }
+
+      10% {
+        transform: scale(1.8) translate(-4px, 2px) rotate(-2deg);
+      }
+
+      20% {
+        transform: scale(1.8) translate(5px, -3px) rotate(2deg);
+      }
+
+      30% {
+        transform: scale(1.8) translate(-3px, -2px) rotate(-1deg);
+      }
+
+      40% {
+        transform: scale(1.8) translate(4px, 3px) rotate(1deg);
+      }
+
+      50% {
+        transform: scale(1.8) translate(-2px, 0) rotate(0deg);
+
+        text-shadow:
+          0 0 8px #ffffff,
+          0 0 20px #ffffff,
+          0 0 40px #8fc5ff,
+          0 0 70px #4d8dff;
+      }
+
+      60% {
+        transform: scale(1.8) translate(3px, -2px) rotate(2deg);
+      }
+
+      70% {
+        transform: scale(1.8) translate(-4px, 2px) rotate(-2deg);
+      }
+
+      80% {
+        transform: scale(1.8) translate(2px, 1px) rotate(1deg);
+      }
+
+      90% {
+        transform: scale(1.8) translate(-2px, -1px) rotate(-1deg);
+      }
+
+      100% {
+        transform: scale(1.8) translate(0, 0) rotate(0deg);
+
+        text-shadow:
+          0 0 5px #ffffff,
+          0 0 15px #ffffff,
+          0 0 30px #7db7ff,
+          0 0 50px #4d8dff;
+      }
+    }
+
+
+    .value:hover {
+      animation: choque 0.55s infinite;
+      cursor: pointer;
+    }
+
+
+    .label {
+      font-size: 1rem;
+      margin-top: 0.5rem;
+
+      text-transform: uppercase;
+      letter-spacing: 2px;
+
+      opacity: 0.8;
+    }
+
+
+    /* =========================
+       MENSAGEM FINAL
+       ========================= */
+
+    .done {
+      font-size: 2rem;
+      margin-top: 1rem;
+    }
+
+
+    /* =========================
+       ENDEREÇO
+       ========================= */
+
+    .endereco-container {
+      margin-top: 2.5rem;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      position: relative;
+    }
+
+
+    .endereco-link {
+      color: #ffffff;
+      text-decoration: none;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+
+      font-size: 1.15rem;
+      font-weight: 500;
+
+      letter-spacing: 0.4px;
+
+      transition:
+        transform 0.35s ease,
+        text-shadow 0.35s ease;
+    }
+
+
+    /* Ícone de localização */
+
+    .icone-localizacao {
+      width: 22px;
+      height: 22px;
+
+      flex-shrink: 0;
+
+      transition:
+        transform 0.35s ease,
+        filter 0.35s ease;
+    }
+
+
+    /* Cada palavra possui seu próprio efeito */
+
+    .palavra-endereco {
+      display: inline-block;
+
+      transition:
+        transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+        text-shadow 0.35s ease,
+        color 0.35s ease;
+    }
+
+
+    .palavra-endereco:hover {
+      transform: scale(1.25);
+
+      color: #ffffff;
+
+      text-shadow:
+        0 0 5px #ffffff,
+        0 0 12px #ffffff,
+        0 0 25px #7db7ff,
+        0 0 40px #4d8dff;
+    }
+
+
+    .endereco-link:hover .icone-localizacao {
+      transform: scale(1.2) translateY(-2px);
+
+      filter:
+        drop-shadow(0 0 5px #ffffff) drop-shadow(0 0 12px #7db7ff);
+    }
+
+
+    /* =========================
+       BOTÃO DO MAPA
+       ========================= */
+
+    .botao-mapa {
+      margin-top: 1.2rem;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+
+      padding: 10px 18px;
+
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      border-radius: 999px;
+
+      background: rgba(255, 255, 255, 0.08);
+
+      color: #ffffff;
+
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.9rem;
+      font-weight: bold;
+
+      cursor: pointer;
+
+      backdrop-filter: blur(8px);
+
+      transition:
+        transform 0.3s ease,
+        background 0.3s ease,
+        box-shadow 0.3s ease,
+        border-color 0.3s ease;
+    }
+
+
+    .botao-mapa:hover {
+      transform: translateY(-2px);
+
+      background: rgba(255, 255, 255, 0.16);
+
+      border-color: rgba(255, 255, 255, 0.7);
+
+      box-shadow:
+        0 0 10px rgba(255, 255, 255, 0.25),
+        0 0 25px rgba(77, 141, 255, 0.25);
+    }
+
+
+    .icone-mapa {
+      width: 18px;
+      height: 18px;
+    }
+
+
+    /* =========================
+       MAPA
+       ========================= */
+
+    .mapa-wrapper {
+      width: min(90vw, 650px);
+
+      margin-top: 1.2rem;
+
+      border-radius: 18px;
+
+      overflow: hidden;
+
+      background: rgba(255, 255, 255, 0.08);
+
+      border: 1px solid rgba(255, 255, 255, 0.25);
+
+      box-shadow:
+        0 10px 40px rgba(0, 0, 0, 0.3);
+
+      opacity: 0;
+
+      max-height: 0;
+
+      transform:
+        translateY(-15px) scale(0.98);
+
+      pointer-events: none;
+
+      transition:
+        opacity 0.45s ease,
+        max-height 0.6s ease,
+        transform 0.45s ease;
+    }
+
+
+    .mapa-wrapper.aberto {
+      opacity: 1;
+
+      max-height: 450px;
+
+      transform:
+        translateY(0) scale(1);
+
+      pointer-events: auto;
+    }
+
+
+    .mapa-cabecalho {
+      height: 45px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 0 12px 0 16px;
+
+      background: rgba(0, 0, 0, 0.25);
+
+      font-size: 0.85rem;
+      font-weight: bold;
+    }
+
+
+    .mapa-titulo {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+
+    .fechar-mapa {
+      width: 30px;
+      height: 30px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border: none;
+      border-radius: 50%;
+
+      background: rgba(255, 255, 255, 0.08);
+
+      color: #ffffff;
+
+      cursor: pointer;
+
+      font-size: 18px;
+
+      transition:
+        transform 0.25s ease,
+        background 0.25s ease;
+    }
+
+
+    .fechar-mapa:hover {
+      transform: rotate(90deg) scale(1.1);
+
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+
+    .mapa-iframe {
+      width: 100%;
+      height: 360px;
+
+      display: block;
+
+      border: none;
+    }
+
+
+    /* =========================
+       MODO ANA BANANA
+       ========================= */
+
+    .modo-ana-container {
+      position: fixed;
+
+      right: 25px;
+      bottom: 20px;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      z-index: 10;
+    }
+
+
+    .modo-ana {
+      width: 70px;
+      height: 70px;
+
+      padding: 0;
+
+      border: none;
+      outline: none;
+
+      background: transparent;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      cursor: pointer;
+
+      transition:
+        transform 0.3s ease,
+        filter 0.3s ease;
+    }
+
+
+    .modo-ana img {
+      width: 70px;
+      height: 70px;
+
+      display: block;
+
+      filter: brightness(0) invert(1);
+
+      transition:
+        transform 0.3s ease,
+        filter 0.3s ease;
+    }
+
+
+    .modo-ana:hover {
+      transform: scale(1.12);
+    }
+
+
+    .modo-ana:hover img {
+      transform: scale(1.05);
+
+      filter:
+        brightness(0) invert(1) drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
+    }
+
+
+    .modo-ana-texto {
+      margin-top: 7px;
+
+      font-family: "Dancing Script", cursive;
+
+      font-size: 17px;
+      font-weight: 700;
+
+      letter-spacing: 0.5px;
+
+      color: #ffffff;
+
+      white-space: nowrap;
+
+      text-shadow:
+        0 1px 5px rgba(0, 0, 0, 0.35);
+
+      transition:
+        transform 0.3s ease,
+        color 0.3s ease;
+    }
+
+
+    .modo-ana-container:hover .modo-ana-texto {
+      transform: scale(1.05);
+    }
+
+
+    /* =========================
+       MODO ANA ATIVADO
+       ========================= */
+
+    body.modo-ana-ativo {
+      background-color: #ff71b5;
+    }
+
+
+    body.modo-ana-ativo .modo-ana {
+      background: transparent;
+      box-shadow: none;
+    }
+
+
+    body.modo-ana-ativo .modo-ana-texto {
+      color: #ffffff;
+
+      text-shadow:
+        0 1px 5px rgba(120, 40, 80, 0.35);
+    }
+
+
+    /* Brilho rosa no endereço */
+
+    body.modo-ana-ativo .palavra-endereco:hover {
+      text-shadow:
+        0 0 5px #ffffff,
+        0 0 12px #ffffff,
+        0 0 25px #ff82b5,
+        0 0 40px #ff4f9a;
+    }
+
+
+    /* =========================
+       ESPUMA CAINDO
+       ========================= */
+
+    .espuma-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1000;
+      overflow: hidden;
+    }
+
+    .particula-espuma {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 50%;
+      filter: blur(1px);
+      box-shadow:
+        inset -2px -2px 5px rgba(0, 0, 0, 0.1),
+        0 0 8px rgba(255, 255, 255, 0.5);
+    }
+
+    @keyframes cair-espuma {
+      0% {
+        transform: translateY(-100px) translateX(0) scale(1);
+        opacity: 0.8;
+      }
+
+      50% {
+        opacity: 0.9;
+      }
+
+      100% {
+        transform: translateY(110vh) translateX(0) scale(0.85);
+        opacity: 0;
+      }
+    }
+
+    .particula-espuma.animando {
+      animation: cair-espuma linear forwards;
+    }
+
+
+    /* =========================
+       AUSENTES
+       ========================= */
+
+    .ausentes-container {
+      margin-top: 1.2rem;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      position: relative;
+    }
+
+    .botao-ausentes {
+      margin-top: 1.2rem;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+
+      padding: 10px 18px;
+
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      border-radius: 999px;
+
+      background: rgba(255, 255, 255, 0.08);
+
+      color: #ffffff;
+
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.9rem;
+      font-weight: bold;
+
+      cursor: pointer;
+
+      backdrop-filter: blur(8px);
+
+      transition:
+        transform 0.3s ease,
+        background 0.3s ease,
+        box-shadow 0.3s ease,
+        border-color 0.3s ease;
+    }
+
+    .botao-ausentes:hover {
+      transform: translateY(-2px);
+
+      background: rgba(255, 255, 255, 0.16);
+
+      border-color: rgba(255, 255, 255, 0.7);
+
+      box-shadow:
+        0 0 10px rgba(255, 255, 255, 0.25),
+        0 0 25px rgba(77, 141, 255, 0.25);
+    }
+
+    .ausentes-wrapper {
+      width: min(90vw, 650px);
+
+      margin-top: 1.2rem;
+
+      border-radius: 18px;
+
+      overflow: hidden;
+
+      background: rgba(255, 255, 255, 0.08);
+
+      border: 1px solid rgba(255, 255, 255, 0.25);
+
+      box-shadow:
+        0 10px 40px rgba(0, 0, 0, 0.3);
+
+      opacity: 0;
+
+      max-height: 0;
+
+      transform:
+        translateY(-15px) scale(0.98);
+
+      pointer-events: none;
+
+      transition:
+        opacity 0.45s ease,
+        max-height 0.6s ease,
+        transform 0.45s ease;
+    }
+
+    .ausentes-wrapper.aberto {
+      opacity: 1;
+
+      max-height: 400px;
+
+      transform:
+        translateY(0) scale(1);
+
+      pointer-events: auto;
+    }
+
+    .ausentes-cabecalho {
+      height: 45px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 0 12px 0 16px;
+
+      background: rgba(0, 0, 0, 0.25);
+
+      font-size: 0.85rem;
+      font-weight: bold;
+    }
+
+    .ausentes-titulo {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .fechar-ausentes {
+      width: 30px;
+      height: 30px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border: none;
+      border-radius: 50%;
+
+      background: rgba(255, 255, 255, 0.08);
+
+      color: #ffffff;
+
+      cursor: pointer;
+
+      font-size: 18px;
+
+      transition:
+        transform 0.25s ease,
+        background 0.25s ease;
+    }
+
+    .fechar-ausentes:hover {
+      transform: rotate(90deg) scale(1.1);
+
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .ausentes-lista {
+      padding: 20px 16px;
+
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .ausente-item {
+      padding: 12px 16px;
+
+      background: rgba(255, 255, 255, 0.05);
+
+      border: 1px solid rgba(255, 255, 255, 0.15);
+
+      border-radius: 8px;
+
+      color: #ffffff;
+
+      font-size: 0.95rem;
+
+      transition:
+        background 0.3s ease,
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+    }
+
+    .ausente-item:hover {
+      background: rgba(255, 255, 255, 0.12);
+
+      transform: translateX(4px);
+
+      box-shadow:
+        0 0 15px rgba(77, 141, 255, 0.2);
+    }
+
+    /* =========================
+       RESPONSIVO
+       ========================= */
+
+    @media (max-width: 600px) {
+
+      body {
+        padding: 25px 15px 120px;
+      }
+
+
+      h1 {
+        font-size: 1.45rem;
+        margin-bottom: 1.7rem;
+      }
+
+
+      .timer {
+        gap: 1rem;
+      }
+
+
+      .value {
+        font-size: 2rem;
+      }
+
+
+      .label {
+        font-size: 0.7rem;
+        letter-spacing: 1px;
+      }
+
+
+      .endereco-container {
+        margin-top: 2rem;
+      }
+
+
+      .endereco-link {
+        font-size: 0.85rem;
+
+        flex-wrap: wrap;
+
+        max-width: 90vw;
+
+        line-height: 1.8;
+      }
+
+
+      .icone-localizacao {
+        width: 18px;
+        height: 18px;
+      }
+
+
+      .palavra-endereco:hover {
+        transform: scale(1.12);
+      }
+
+
+      .mapa-wrapper {
+        width: 92vw;
+      }
+
+
+      .mapa-iframe {
+        height: 300px;
+      }
+
+
+      .modo-ana-container {
+        right: 15px;
+        bottom: 15px;
+      }
+
+
+      .modo-ana {
+        width: 60px;
+        height: 60px;
+      }
+
+
+      .modo-ana img {
+        width: 60px;
+        height: 60px;
+      }
+
+
+      .modo-ana-texto {
+        font-size: 11px;
+      }
+    }
+  </style>
+
+</head>
+
+
+<body>
+
+  <h1>QUANTO FALTA PARA O GRANDE DIA?</h1>
+
+
+  <!-- =========================
+       CONTADOR
+       ========================= -->
+
+  <div class="timer">
+
+    <div class="unit">
+      <div class="value" id="dias">00</div>
+      <div class="label">Dias</div>
+    </div>
+
+    <div class="unit">
+      <div class="value" id="horas">00</div>
+      <div class="label">Horas</div>
+    </div>
+
+    <div class="unit">
+      <div class="value" id="minutos">00</div>
+      <div class="label">Minutos</div>
+    </div>
+
+    <div class="unit">
+      <div class="value" id="segundos">00</div>
+      <div class="label">Segundos</div>
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       MENSAGEM FINAL
+       ========================= -->
+
+  <div class="done" id="mensagemFinal" style="display: none;">
+    Chegou o grande dia! 🎉
+  </div>
+
+
+  <!-- =========================
+       ENDEREÇO
+       ========================= -->
+
+  <div class="endereco-container">
+
+    <a class="endereco-link"
+      href="https://www.google.com/maps/search/?api=1&query=R.+Carangola,+372+-+Res.+Cidade+Jardim,+Catanduva+-+SP,+15810-460,+Brasil"
+      target="_blank" rel="noopener noreferrer" aria-label="Abrir endereço no Google Maps">
+
+      <!-- Ícone de localização -->
+
+      <svg class="icone-localizacao" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true">
+        <path d="M12 21C12 21 19 14.7 19 8.8C19 5.04 15.87 2 12 2C8.13 2 5 5.04 5 8.8C5 14.7 12 21 12 21Z"
+          stroke="currentColor" stroke-width="1.8" />
+
+        <circle cx="12" cy="8.5" r="2.4" stroke="currentColor" stroke-width="1.8" />
+      </svg>
+
+
+      <!--
+        Cada palavra está separada para que
+        o hover aconteça individualmente.
+      -->
+
+      <span class="palavra-endereco">Rua</span>
+      <span class="palavra-endereco">Carangola,</span>
+      <span class="palavra-endereco">372,</span>
+      <span class="palavra-endereco">Cidade</span>
+      <span class="palavra-endereco">Jardim</span>
+      <span class="palavra-endereco">-</span>
+      <span class="palavra-endereco">Catanduva</span>
+
+    </a>
+
+
+    <!-- =========================
+         BOTÃO ABRIR MAPA
+         ========================= -->
+
+    <button class="botao-mapa" id="botaoMapa" type="button" aria-expanded="false" aria-controls="mapaWrapper">
+
+      <svg class="icone-mapa" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M3 6L8.5 3L15.5 6L21 3V18L15.5 21L8.5 18L3 21V6Z" stroke="currentColor" stroke-width="1.7"
+          stroke-linejoin="round" />
+
+        <path d="M8.5 3V18" stroke="currentColor" stroke-width="1.7" />
+
+        <path d="M15.5 6V21" stroke="currentColor" stroke-width="1.7" />
+      </svg>
+
+      <span id="textoBotaoMapa">Ver localização</span>
+
+    </button>
+
+
+    <!-- =========================
+         BOTÃO COMEÇAR OS TRABALHOS
+         ========================= -->
+
+    <button class="botao-mapa" id="botaoComecar" type="button" aria-label="Começar os trabalhos">
+
+      <svg class="icone-mapa" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" stroke="currentColor"
+          stroke-width="1.7" stroke-linejoin="round" />
+        <path d="M10 7v10l7-5-7-5z" fill="currentColor" />
+      </svg>
+
+      <span>Começar os trabalhos</span>
+
+    </button>
+
+    <!-- =========================
+         BOTÃO CHAMADA
+         ========================= -->
+
+    <button class="botao-mapa" id="botaoChamada" type="button" aria-label="Tocar chamada">
+
+      <svg class="icone-mapa" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" stroke="currentColor"
+          stroke-width="1.7" stroke-linejoin="round" />
+        <path d="M10 7v10l7-5-7-5z" fill="currentColor" />
+      </svg>
+
+      <span>Mas que grande dia é esse?</span>
+
+    </button>
+
+
+    <!-- =========================
+         MAPA
+         ========================= -->
+
+    <div class="mapa-wrapper" id="mapaWrapper" aria-hidden="true">
+
+      <div class="mapa-cabecalho">
+
+        <div class="mapa-titulo">
+
+          <svg class="icone-mapa" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M12 21C12 21 19 14.7 19 8.8C19 5.04 15.87 2 12 2C8.13 2 5 5.04 5 8.8C5 14.7 12 21 12 21Z"
+              stroke="currentColor" stroke-width="1.8" />
+
+            <circle cx="12" cy="8.5" r="2.4" stroke="currentColor" stroke-width="1.8" />
+          </svg>
+
+          <span>Localização</span>
+
+        </div>
+
+
+        <button class="fechar-mapa" id="fecharMapa" type="button" aria-label="Fechar mapa" title="Fechar mapa">
+          ×
+        </button>
+
+      </div>
+
+
+      <!--
+        Mapa incorporado.
+        Não precisa de API Key para este tipo de incorporação.
+      -->
+
+      <iframe class="mapa-iframe" title="Mapa da localização em Catanduva"
+        src="https://www.google.com/maps?q=R.+Carangola,+372+-+Res.+Cidade+Jardim,+Catanduva+-+SP,+15810-460,+Brasil&output=embed"
+        loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"> </iframe>
+
+    </div>
+
+
+    <!-- =========================
+         BOTÃO AUSENTES
+         ========================= -->
+
+    <button class="botao-ausentes" id="botaoAusentes" type="button" aria-expanded="false" aria-controls="ausentsWrapper">
+
+      <svg class="icone-mapa" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3z" fill="currentColor" />
+        <path d="M8 11c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3z" fill="currentColor" />
+        <path d="M16 13c-2.67 0-8 1.34-8 4v3h16v-3c0-2.66-5.33-4-8-4z" fill="currentColor" />
+      </svg>
+
+      <span id="textoBotaoAusentes">Quem não vai estar</span>
+
+    </button>
+
+
+    <!-- =========================
+         LISTA DE AUSENTES
+         ========================= -->
+
+    <div class="ausentes-wrapper" id="ausentsWrapper" aria-hidden="true">
+
+      <div class="ausentes-cabecalho">
+
+        <div class="ausentes-titulo">
+
+          <svg class="icone-mapa" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3z" fill="currentColor" />
+            <path d="M8 11c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3z" fill="currentColor" />
+            <path d="M16 13c-2.67 0-8 1.34-8 4v3h16v-3c0-2.66-5.33-4-8-4z" fill="currentColor" />
+          </svg>
+
+          <span>Quem não vai estar</span>
+
+        </div>
+
+        <button class="fechar-ausentes" id="fecharAusentes" type="button" aria-label="Fechar lista de ausentes" title="Fechar">
+          ×
+        </button>
+
+      </div>
+
+      <div class="ausentes-lista">
+
+        <div class="ausente-item">José Aparecido Poloni Jr.</div>
+
+        <div class="ausente-item">Tássio Antônio Tonetto</div>
+
+        <div class="ausente-item">Camila Oliveira de Souza</div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       ÁUDIO CERVEJA
+       ========================= -->
+
+  <audio id="audioCerveja" src="audio/abrindo-latinha.mp3" preload="auto"></audio>
+
+  <!-- =========================
+       ÁUDIO CHAMADA
+       ========================= -->
+
+  <audio id="audioChamada" src="audio/chamada.mp3" preload="auto"></audio>
+
+
+  <!-- =========================
+       CONTAINER DE ESPUMA
+       ========================= -->
+
+  <div class="espuma-container" id="espumaContainer"></div>
+
+
+  <!-- =========================
+       MODO ANA BANANA
+       ========================= -->
+
+  <div class="modo-ana-container">
+
+    <button class="modo-ana" id="modoAna" aria-label="Modo Ana Banana" title="Modo Ana Banana">
+
+      <img src="https://www.svgrepo.com/show/443128/brand-hello-kitty.svg" alt="Hello Kitty">
+
+    </button>
+
+
+    <div class="modo-ana-texto">
+      Modo Ana Banana
+    </div>
+
+  </div>
+
+
+  <script>
+
+    /* =========================
+       CONTAGEM REGRESSIVA
+       ========================= */
+
+    const dataAlvo = new Date(
+      2026,
+      7,
+      29,
+      0,
+      0,
+      0,
+      0
+    );
+
+
+    function atualizarTimer() {
+
+      const agora = new Date();
+
+      const diff = dataAlvo - agora;
+
+
+      if (diff <= 0) {
+
+        document.querySelector('.timer').style.display = 'none';
+
+        document.getElementById(
+          'mensagemFinal'
+        ).style.display = 'block';
+
+        return;
+      }
+
+
+      const dias = Math.floor(
+        diff / (1000 * 60 * 60 * 24)
+      );
+
+
+      const horas = Math.floor(
+        (diff % (1000 * 60 * 60 * 24))
+        / (1000 * 60 * 60)
+      );
+
+
+      const minutos = Math.floor(
+        (diff % (1000 * 60 * 60))
+        / (1000 * 60)
+      );
+
+
+      const segundos = Math.floor(
+        (diff % (1000 * 60))
+        / 1000
+      );
+
+
+      document.getElementById('dias').textContent =
+        String(dias).padStart(2, '0');
+
+
+      document.getElementById('horas').textContent =
+        String(horas).padStart(2, '0');
+
+
+      document.getElementById('minutos').textContent =
+        String(minutos).padStart(2, '0');
+
+
+      document.getElementById('segundos').textContent =
+        String(segundos).padStart(2, '0');
+
+    }
+
+
+    atualizarTimer();
+
+    setInterval(atualizarTimer, 1000);
+
+
+
+    /* =========================
+       MAPA
+       ========================= */
+
+    const botaoMapa =
+      document.getElementById('botaoMapa');
+
+    const mapaWrapper =
+      document.getElementById('mapaWrapper');
+
+    const fecharMapa =
+      document.getElementById('fecharMapa');
+
+    const textoBotaoMapa =
+      document.getElementById('textoBotaoMapa');
+
+
+    function abrirMapa() {
+
+      mapaWrapper.classList.add('aberto');
+
+      mapaWrapper.setAttribute(
+        'aria-hidden',
+        'false'
+      );
+
+      botaoMapa.setAttribute(
+        'aria-expanded',
+        'true'
+      );
+
+      textoBotaoMapa.textContent =
+        'Ocultar mapa';
+
+    }
+
+
+    function fecharMapaFuncao() {
+
+      mapaWrapper.classList.remove('aberto');
+
+      mapaWrapper.setAttribute(
+        'aria-hidden',
+        'true'
+      );
+
+      botaoMapa.setAttribute(
+        'aria-expanded',
+        'false'
+      );
+
+      textoBotaoMapa.textContent =
+        'Ver localização';
+
+    }
+
+
+    botaoMapa.addEventListener(
+      'click',
+      () => {
+
+        if (
+          mapaWrapper.classList.contains('aberto')
+        ) {
+
+          fecharMapaFuncao();
+
+        } else {
+
+          abrirMapa();
+
+        }
+
+      }
+    );
+
+
+    fecharMapa.addEventListener(
+      'click',
+      fecharMapaFuncao
+    );
+
+
+
+    /* =========================
+       AUSENTES
+       ========================= */
+
+    const botaoAusentes =
+      document.getElementById('botaoAusentes');
+
+    const ausentsWrapper =
+      document.getElementById('ausentsWrapper');
+
+    const fecharAusentes =
+      document.getElementById('fecharAusentes');
+
+    const textoBotaoAusentes =
+      document.getElementById('textoBotaoAusentes');
+
+
+    function abrirAusentes() {
+
+      ausentsWrapper.classList.add('aberto');
+
+      ausentsWrapper.setAttribute(
+        'aria-hidden',
+        'false'
+      );
+
+      botaoAusentes.setAttribute(
+        'aria-expanded',
+        'true'
+      );
+
+      textoBotaoAusentes.textContent =
+        'Ocultar ausentes';
+
+    }
+
+
+    function fecharAusentesFuncao() {
+
+      ausentsWrapper.classList.remove('aberto');
+
+      ausentsWrapper.setAttribute(
+        'aria-hidden',
+        'true'
+      );
+
+      botaoAusentes.setAttribute(
+        'aria-expanded',
+        'false'
+      );
+
+      textoBotaoAusentes.textContent =
+        'Quem não vai estar';
+
+    }
+
+
+    botaoAusentes.addEventListener(
+      'click',
+      () => {
+
+        if (
+          ausentsWrapper.classList.contains('aberto')
+        ) {
+
+          fecharAusentesFuncao();
+
+        } else {
+
+          abrirAusentes();
+
+        }
+
+      }
+    );
+
+
+    fecharAusentes.addEventListener(
+      'click',
+      fecharAusentesFuncao
+    );
+
+
+
+    /* =========================
+       MODO ANA BANANA
+       ========================= */
+
+    const botaoAna =
+      document.getElementById('modoAna');
+
+
+    botaoAna.addEventListener(
+      'click',
+      () => {
+
+        document.body.classList.toggle(
+          'modo-ana-ativo'
+        );
+
+      }
+    );
+
+
+
+    /* =========================
+       BOTÃO COMEÇAR OS TRABALHOS
+       ========================= */
+
+    const botaoComecar =
+      document.getElementById('botaoComecar');
+
+
+    function tocarSomCerveja() {
+
+      const audio = document.getElementById(
+        'audioCerveja'
+      );
+
+      audio.currentTime = 0;
+
+      audio.play().catch(
+        (erro) => {
+
+          console.log(
+            'Erro ao tocar áudio:',
+            erro
+          );
+
+        }
+      );
+
+    }
+
+
+    botaoComecar.addEventListener(
+      'click',
+      tocarSomCerveja
+    );
+
+
+    /* =========================
+       BOTÃO CHAMADA - TOCAR ÁUDIO
+       ========================= */
+
+    const botaoChamada =
+      document.getElementById('botaoChamada');
+
+    function tocarChamada() {
+
+      const audioChamada = document.getElementById(
+        'audioChamada'
+      );
+
+      audioChamada.currentTime = 0;
+
+      audioChamada.play().catch(
+        (erro) => {
+
+          console.log(
+            'Erro ao tocar áudio de chamada:',
+            erro
+          );
+
+        }
+      );
+
+    }
+
+
+    botaoChamada.addEventListener(
+      'click',
+      tocarChamada
+    );
+
+
+
+    /* =========================
+       EFEITO DE ESPUMA CAINDO
+       ========================= */
+
+    const audio = document.getElementById(
+      'audioCerveja'
+    );
+
+    const espumaContainer =
+      document.getElementById('espumaContainer');
+
+    let espumaJaFoiTocada = false;
+
+
+    function criarEspuma() {
+
+      const particula =
+        document.createElement('div');
+
+      particula.classList.add(
+        'particula-espuma'
+      );
+
+
+      const tamanho = Math.random() * 40 + 15;
+
+      particula.style.width = tamanho + 'px';
+      particula.style.height = tamanho + 'px';
+
+
+      const posicaoX =
+        Math.random() * window.innerWidth;
+
+      particula.style.left = posicaoX + 'px';
+      particula.style.top = '-50px';
+
+
+      const duracao =
+        Math.random() * 3 + 4;
+
+      particula.style.animation =
+        `cair-espuma ${duracao}s linear forwards`;
+
+
+      const colorOpacity =
+        Math.random() * 0.3 + 0.5;
+
+      particula.style.background =
+        `rgba(255, 255, 255, ${colorOpacity})`;
+
+
+      espumaContainer.appendChild(particula);
+
+
+      setTimeout(
+        () => {
+          particula.remove();
+        },
+        duracao * 1000
+      );
+
+    }
+
+
+    function gerarChuvaDeEspuma() {
+
+      const quantidadeInicial = 150;
+
+      for (let i = 0; i < quantidadeInicial; i++) {
+
+        setTimeout(
+          () => {
+            criarEspuma();
+          },
+          i * 8
+        );
+
+      }
+
+
+      let tempoEspuma = 0;
+      const duracacaoEspuma = 5000;
+
+      const intervalo = setInterval(
+        () => {
+
+          tempoEspuma += 20;
+
+          if (tempoEspuma >= duracacaoEspuma) {
+            clearInterval(intervalo);
+            return;
+          }
+
+          criarEspuma();
+          criarEspuma();
+          criarEspuma();
+
+        },
+        20
+      );
+
+    }
+
+
+    audio.addEventListener(
+      'timeupdate',
+      () => {
+
+        if (
+          audio.duration
+          && audio.currentTime
+          >= audio.duration / 2
+          && !espumaJaFoiTocada
+        ) {
+
+          espumaJaFoiTocada = true;
+          gerarChuvaDeEspuma();
+
+        }
+
+      }
+    );
+
+
+    audio.addEventListener(
+      'ended',
+      () => {
+        espumaJaFoiTocada = false;
+      }
+    );
+
+  </script>
+
+</body>
+
+</html>
