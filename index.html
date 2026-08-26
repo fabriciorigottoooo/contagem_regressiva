@@ -1064,6 +1064,16 @@
       cursor: pointer;
       backdrop-filter: blur(8px);
       transition: all 0.25s ease;
+
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .admin-botao svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
     }
 
     .admin-botao:hover {
@@ -1137,6 +1147,16 @@
       font-weight: bold;
       text-align: left;
       transition: all 0.25s ease;
+
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .admin-acao svg {
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0;
     }
 
     .admin-acao:hover {
@@ -1158,6 +1178,297 @@
         left: 10px;
         bottom: 52px;
       }
+    }
+
+
+    /* =========================
+       MODAL DE SENHA DO ADMIN
+       ========================= */
+
+    .senha-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 10010;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 20px;
+
+      background: rgba(3, 8, 22, 0.62);
+
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+
+      transition:
+        opacity 0.3s ease,
+        visibility 0.3s ease;
+    }
+
+    .senha-overlay.aberto {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .senha-modal {
+      width: min(92vw, 360px);
+
+      padding: 26px 22px 22px;
+
+      border-radius: 18px;
+
+      border: 1px solid rgba(255, 255, 255, 0.25);
+
+      background: rgba(8, 18, 45, 0.96);
+
+      box-shadow:
+        0 22px 60px rgba(0, 0, 0, 0.5),
+        0 0 40px rgba(77, 141, 255, 0.12);
+
+      text-align: center;
+
+      transform: translateY(14px) scale(0.96);
+
+      transition:
+        transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .senha-overlay.aberto .senha-modal {
+      transform: translateY(0) scale(1);
+    }
+
+    .senha-icone {
+      width: 52px;
+      height: 52px;
+
+      margin: 0 auto 14px;
+
+      border-radius: 50%;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background: rgba(77, 141, 255, 0.14);
+
+      border: 1px solid rgba(125, 183, 255, 0.35);
+
+      color: #bcd6ff;
+
+      box-shadow:
+        0 0 18px rgba(77, 141, 255, 0.25);
+    }
+
+    .senha-icone svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .senha-modal h2 {
+      font-size: 1.05rem;
+      margin-bottom: 6px;
+      letter-spacing: 0.4px;
+    }
+
+    .senha-modal p {
+      font-size: 0.78rem;
+      line-height: 1.5;
+      opacity: 0.72;
+      margin-bottom: 16px;
+    }
+
+    .senha-campo {
+      position: relative;
+
+      display: flex;
+      align-items: center;
+    }
+
+    .senha-campo input {
+      width: 100%;
+
+      padding: 12px 44px 12px 14px;
+
+      border-radius: 10px;
+
+      border: 1px solid rgba(255, 255, 255, 0.26);
+
+      background: rgba(255, 255, 255, 0.07);
+
+      color: #ffffff;
+
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.95rem;
+      letter-spacing: 1px;
+
+      outline: none;
+
+      transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease;
+    }
+
+    .senha-campo input::placeholder {
+      color: rgba(255, 255, 255, 0.4);
+      letter-spacing: 0.5px;
+    }
+
+    .senha-campo input:focus {
+      border-color: rgba(125, 183, 255, 0.85);
+
+      background: rgba(255, 255, 255, 0.1);
+
+      box-shadow:
+        0 0 0 3px rgba(77, 141, 255, 0.18),
+        0 0 14px rgba(77, 141, 255, 0.25);
+    }
+
+    .senha-campo.invalido input {
+      border-color: rgba(255, 90, 120, 0.75);
+
+      box-shadow:
+        0 0 0 3px rgba(255, 90, 120, 0.15);
+    }
+
+    .toggle-senha {
+      position: absolute;
+      right: 8px;
+
+      width: 30px;
+      height: 30px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border: none;
+      border-radius: 50%;
+
+      background: transparent;
+
+      color: rgba(255, 255, 255, 0.6);
+
+      cursor: pointer;
+
+      transition:
+        color 0.2s ease,
+        background 0.2s ease;
+    }
+
+    .toggle-senha:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .toggle-senha svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .senha-erro {
+      display: none;
+
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+
+      margin-top: 12px;
+
+      font-size: 0.78rem;
+
+      color: #ff9db1;
+    }
+
+    .senha-erro.visivel {
+      display: flex;
+    }
+
+    .senha-erro svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+
+    .senha-acoes {
+      display: flex;
+      gap: 10px;
+
+      margin-top: 18px;
+    }
+
+    .senha-btn {
+      flex: 1;
+
+      padding: 11px 12px;
+
+      border-radius: 10px;
+
+      border: 1px solid rgba(255, 255, 255, 0.22);
+
+      background: rgba(255, 255, 255, 0.08);
+
+      color: #ffffff;
+
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.85rem;
+      font-weight: bold;
+
+      cursor: pointer;
+
+      transition:
+        transform 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+    }
+
+    .senha-btn:hover {
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .senha-btn.confirmar {
+      background: linear-gradient(135deg, #2f6fe0, #4d8dff);
+
+      border-color: rgba(125, 183, 255, 0.6);
+
+      box-shadow:
+        0 6px 18px rgba(47, 111, 224, 0.35);
+    }
+
+    .senha-btn.confirmar:hover {
+      background: linear-gradient(135deg, #3a7bf0, #5f99ff);
+
+      box-shadow:
+        0 8px 22px rgba(47, 111, 224, 0.5),
+        0 0 18px rgba(77, 141, 255, 0.35);
+    }
+
+    .senha-btn.cancelar {
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    /* Animação de "erro" (treme a caixa) */
+
+    @keyframes tremer {
+      0%, 100% { transform: translateX(0) scale(1); }
+      15% { transform: translateX(-9px) scale(1); }
+      30% { transform: translateX(8px) scale(1); }
+      45% { transform: translateX(-6px) scale(1); }
+      60% { transform: translateX(5px) scale(1); }
+      75% { transform: translateX(-3px) scale(1); }
+      90% { transform: translateX(2px) scale(1); }
+    }
+
+    .senha-modal.tremer {
+      animation: tremer 0.45s ease;
     }
 
   </style>
@@ -1204,7 +1515,7 @@
        ========================= -->
 
   <div class="done" id="mensagemFinal" style="display: none;">
-    Chegou o grande dia! 🎉
+    Chegou o grande dia!
   </div>
 
 
@@ -1403,7 +1714,15 @@
 
   <div class="admin-acesso">
     <button class="admin-botao" id="botaoAdmin" type="button" aria-expanded="false">
-      ⚙ Administrador
+
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round" aria-hidden="true">
+        <path
+          d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+        <circle cx="12" cy="12" r="3" />
+      </svg>
+
+      Administrador
     </button>
   </div>
 
@@ -1418,14 +1737,116 @@
 
     <div class="admin-acoes">
       <button class="admin-acao" id="botaoTestarFinal" type="button">
-        🧪 Zerar cronômetro (teste)
+
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" aria-hidden="true">
+          <path
+            d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2" />
+          <path d="M8.5 2h7" />
+          <path d="M7 16h10" />
+        </svg>
+
+        Zerar cronômetro (teste)
       </button>
 
       <button class="admin-acao perigo" id="botaoVoltarContador" type="button">
-        ↩ Voltar ao cronômetro
+
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+          <path d="M3 3v5h5" />
+        </svg>
+
+        Voltar ao cronômetro
       </button>
     </div>
   </div>
+
+
+  <!-- =========================
+       MODAL DE SENHA DO ADMIN
+       ========================= -->
+
+  <div class="senha-overlay" id="senhaOverlay" aria-hidden="true">
+
+    <div class="senha-modal" id="senhaModal" role="dialog" aria-modal="true" aria-labelledby="senhaTitulo">
+
+      <div class="senha-icone">
+
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" aria-hidden="true">
+          <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+          <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+        </svg>
+
+      </div>
+
+      <h2 id="senhaTitulo">Área restrita</h2>
+
+      <p>
+        Digite a senha de administrador para zerar o cronômetro
+        em modo de teste.
+      </p>
+
+      <form id="formSenha" novalidate>
+
+        <div class="senha-campo" id="senhaCampo">
+
+          <input type="password" id="inputSenha" placeholder="Senha de administrador" autocomplete="off"
+            autocapitalize="none" spellcheck="false">
+
+          <button type="button" class="toggle-senha" id="toggleSenha" aria-label="Mostrar ou ocultar senha"
+            title="Mostrar ou ocultar senha">
+
+            <svg id="iconeOlhoAberto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+
+            <svg id="iconeOlhoFechado" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display: none;">
+              <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
+              <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68" />
+              <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61" />
+              <line x1="2" x2="22" y1="2" y2="22" />
+            </svg>
+
+          </button>
+
+        </div>
+
+        <div class="senha-erro" id="senhaErro">
+
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" x2="12" y1="8" y2="12" />
+            <line x1="12" x2="12.01" y1="16" y2="16" />
+          </svg>
+
+          <span>Senha incorreta. Tente novamente.</span>
+
+        </div>
+
+        <div class="senha-acoes">
+
+          <button type="button" class="senha-btn cancelar" id="cancelarSenha">
+            Cancelar
+          </button>
+
+          <button type="submit" class="senha-btn confirmar" id="confirmarSenha">
+            Zerar cronômetro
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
 
   <!-- =========================
        ÁUDIO CERVEJA
@@ -1996,10 +2417,10 @@
       painelAdmin.setAttribute('aria-hidden', String(!aberto));
     });
 
+    // Ao clicar em "Zerar cronômetro (teste)", agora é exigida
+    // a senha de administrador antes de liberar o teste.
     botaoTestarFinal.addEventListener('click', () => {
-      contadorForcadoZero = true;
-      atualizarTimer();
-      atualizarStatusAdmin('modo de teste — cronômetro zerado');
+      abrirModalSenha();
     });
 
     botaoVoltarContador.addEventListener('click', () => {
@@ -2022,6 +2443,161 @@
       atualizarStatusAdmin('cronômetro normal');
       atualizarTimer();
     });
+
+
+    /* =========================
+       SENHA DO ADMINISTRADOR
+       ========================= */
+
+    const SENHA_ADMIN = 'sexonalaje';
+
+    const senhaOverlay = document.getElementById('senhaOverlay');
+    const senhaModal = document.getElementById('senhaModal');
+    const senhaCampo = document.getElementById('senhaCampo');
+    const formSenha = document.getElementById('formSenha');
+    const inputSenha = document.getElementById('inputSenha');
+    const toggleSenha = document.getElementById('toggleSenha');
+    const iconeOlhoAberto = document.getElementById('iconeOlhoAberto');
+    const iconeOlhoFechado = document.getElementById('iconeOlhoFechado');
+    const senhaErro = document.getElementById('senhaErro');
+    const cancelarSenha = document.getElementById('cancelarSenha');
+
+
+    function abrirModalSenha() {
+
+      // Sempre começa limpo: sem erro, campo vazio e senha oculta.
+      senhaErro.classList.remove('visivel');
+      senhaCampo.classList.remove('invalido');
+      inputSenha.value = '';
+      inputSenha.type = 'password';
+      iconeOlhoAberto.style.display = '';
+      iconeOlhoFechado.style.display = 'none';
+
+      senhaOverlay.classList.add('aberto');
+      senhaOverlay.setAttribute('aria-hidden', 'false');
+
+      // Foca o campo assim que a animação de entrada começa.
+      setTimeout(() => {
+        inputSenha.focus();
+      }, 80);
+
+    }
+
+
+    function fecharModalSenha() {
+
+      senhaOverlay.classList.remove('aberto');
+      senhaOverlay.setAttribute('aria-hidden', 'true');
+
+    }
+
+
+    function senhaIncorreta() {
+
+      senhaErro.classList.add('visivel');
+      senhaCampo.classList.add('invalido');
+
+      // Reinicia a animação de tremida mesmo em tentativas seguidas.
+      senhaModal.classList.remove('tremer');
+      void senhaModal.offsetWidth;
+      senhaModal.classList.add('tremer');
+
+      inputSenha.select();
+      inputSenha.focus();
+
+    }
+
+
+    formSenha.addEventListener(
+      'submit',
+      (evento) => {
+
+        evento.preventDefault();
+
+        const tentativa = inputSenha.value.trim().toLowerCase();
+
+        if (tentativa === SENHA_ADMIN) {
+
+          fecharModalSenha();
+
+          contadorForcadoZero = true;
+          atualizarTimer();
+          atualizarStatusAdmin('modo de teste — cronômetro zerado');
+
+        } else {
+
+          senhaIncorreta();
+
+        }
+
+      }
+    );
+
+
+    // Mostrar / ocultar a senha digitada.
+    toggleSenha.addEventListener(
+      'click',
+      () => {
+
+        const mostrar = inputSenha.type === 'password';
+
+        inputSenha.type = mostrar ? 'text' : 'password';
+
+        iconeOlhoAberto.style.display = mostrar ? 'none' : '';
+        iconeOlhoFechado.style.display = mostrar ? '' : 'none';
+
+        inputSenha.focus();
+
+      }
+    );
+
+
+    // Limpa o estado de erro enquanto a pessoa digita de novo.
+    inputSenha.addEventListener(
+      'input',
+      () => {
+
+        senhaErro.classList.remove('visivel');
+        senhaCampo.classList.remove('invalido');
+
+      }
+    );
+
+
+    cancelarSenha.addEventListener(
+      'click',
+      fecharModalSenha
+    );
+
+
+    // Clicar fora da caixinha também fecha o modal.
+    senhaOverlay.addEventListener(
+      'click',
+      (evento) => {
+
+        if (evento.target === senhaOverlay) {
+          fecharModalSenha();
+        }
+
+      }
+    );
+
+
+    // Tecla Escape fecha o modal.
+    document.addEventListener(
+      'keydown',
+      (evento) => {
+
+        if (
+          evento.key === 'Escape'
+          && senhaOverlay.classList.contains('aberto')
+        ) {
+          fecharModalSenha();
+        }
+
+      }
+    );
+
 
 
     function iniciarCelebracaoFinal() {
